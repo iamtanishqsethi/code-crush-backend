@@ -1,0 +1,15 @@
+{
+  "name": "code-crush-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev" : "nodemon src/app.js",
+    "start": "node src/app.js"
+  },
+  "author": "Tanishq Sethi",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
