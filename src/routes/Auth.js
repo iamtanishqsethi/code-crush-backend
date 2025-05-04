@@ -65,7 +65,7 @@ router.post('/login',async (req,res)=>{
         })
         //add token to cookie and send response back to user 
 
-        res.status(200).send("Login successfull")
+        res.status(200).send(user)
 
 
 
