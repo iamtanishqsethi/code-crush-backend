@@ -5,7 +5,6 @@ const bcrypt=require('bcrypt')
 const validator=require("validator")
 const jwt=require("jsonwebtoken")
 const User=require('../models/user.js')
-const {userAuth}=require("../middlewares/auth.js")
 
 router.post("/signUp",async (req,res)=>{
     try {
@@ -75,6 +74,11 @@ router.post('/login',async (req,res)=>{
     }
 })
 
-
+router.post('/logout',async (req,res)=>{
+    res.cookie("token",null,{
+        expires:new Date(Date.now())
+    })
+    res.send("Logged out")
+})
 
 module.exports=router;

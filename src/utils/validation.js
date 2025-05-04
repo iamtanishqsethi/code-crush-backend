@@ -22,6 +22,36 @@ const validateSignUpData=(req)=>{
     }))
     throw new Error("Enter strong password")
 }
+
+const validatePassword=(password)=>{
+
+    if(!validator.isStrongPassword(password,{
+        minLength:8,
+        minNumbers:1,
+        minSymbols:1,
+        minUppercase:1,
+    })) throw new Error("Enter strong password");
+}
+const validateEditProfileData = (req) => {
+    const allowedEditFields = [
+        "firstName",
+        "lastName",
+        "emailId",
+        "photoUrl",
+        "gender",
+        "age",
+        "about",
+        "skills",
+    ];
+
+    return Object.keys(req.body).every((field) =>
+        allowedEditFields.includes(field)
+    )
+
+
+};
 module.exports={
-    validateSignUpData
+    validateSignUpData,
+    validateEditProfileData,
+    validatePassword
 }
