@@ -18,7 +18,7 @@ router.get('/',userAuth,async (req,res) => {
 
 })
 
-router.patch('/edit/:id',userAuth,async (req,res) => {
+router.patch('/edit',userAuth,async (req,res) => {
     try{
         if (!req.body || Object.keys(req.body).length === 0) {
             return res.status(400).send("Empty update body.");
@@ -28,10 +28,8 @@ router.patch('/edit/:id',userAuth,async (req,res) => {
         }
         const user=req.user
         if(!user) throw new Error("User not found");
-        const id=req.params.id;
-        if (user._id.toString() !== id) {
-            return res.status(403).send("Unauthorized: Cannot edit another user's profile.");
-        }
+        const id=user._id;
+
         const updatedUser = await User.findByIdAndUpdate(id, req.body, { new: true });
         res.status(200).send(updatedUser)
     }
