@@ -10,7 +10,7 @@ router.get('/requests',userAuth,async (req,res)=>{
         const pendingRequests=await ConnectionRequest.find({
             toUserId: loggedInUser._id,
             status: "interested"
-        }).populate("fromUserId",["firstName","lastName","photoUrl"]);
+        }).populate("fromUserId",["firstName","lastName","photoUrl","about"]);
 
         res.json({message:"Data fetched successfully.",data:pendingRequests})
 
