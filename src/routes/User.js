@@ -28,7 +28,7 @@ router.get('/connections',userAuth,async (req,res)=>{
         }).populate("fromUserId",["firstName","lastName","photoUrl"]).populate("toUserId",["firstName","lastName","photoUrl"]);
 
         const data=connectedRequest.map((row)=>{
-            if(row.fromUserId._id.toString()===loggedInUser._id){
+            if(row.fromUserId._id.toString()===loggedInUser._id.toString()){
                 return row.toUserId
             }
             return row.fromUserId
