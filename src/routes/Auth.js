@@ -62,7 +62,7 @@ router.post('/login',async (req,res)=>{
             maxAge: 3600000*24,
             httpOnly: true,
             secure: true,
-            sameSite:"None"
+            sameSite:'none'
         })
         //add token to cookie and send response back to user 
 
