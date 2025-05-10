@@ -27,6 +27,8 @@ router.post("/signUp",async (req,res)=>{
             maxAge:3600000*24,
             httpOnly:true,
             secure:true,
+            sameSite:"none",
+            path: "/",
         })
         res.status(201).send("User Added successfully!")
     } catch (err) {
@@ -62,7 +64,8 @@ router.post('/login',async (req,res)=>{
             maxAge: 3600000*24,
             httpOnly: true,
             secure: true,
-            sameSite:'none'
+            sameSite:'none',
+            path: "/",
         })
         //add token to cookie and send response back to user 
 

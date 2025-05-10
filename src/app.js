@@ -9,7 +9,7 @@ const Request=require('./routes/Request.js')
 const User=require('./routes/User.js')
 
 app.use(cors({
-    origin:["http://localhost:5173"],
+    origin:"http://localhost:5173",
     credentials: true,
 }))
 require('dotenv').config();
