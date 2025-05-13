@@ -25,7 +25,7 @@ const initSocket=(server)=>{
             console.log("Joining room "+ room)
             socket.join(room)
         })
-        socket.on("sendMessage",async ({firstName,userId,targetUserId,text})=>{
+        socket.on("sendMessage",async ({firstName,lastName,photoUrl,userId,targetUserId,text})=>{
 
             try{
                 //event for sending  messages
@@ -57,7 +57,7 @@ const initSocket=(server)=>{
                     text:text
                 })
                 await chat.save()
-                io.to(room).emit("newMessageReceived",{firstName,text,timestamp:new Date()})
+                io.to(room).emit("newMessageReceived",{firstName,lastName,photoUrl,text,_id:userId,timestamp:new Date()})
             }catch(error){
                 console.log(error)
             }
