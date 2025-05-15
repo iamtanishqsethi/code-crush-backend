@@ -73,6 +73,19 @@ router.get('/feed',userAuth,async (req,res)=>{
         res.status(400).json({message:`${error}`});
     }
 })
+router.get('/find/:targetUserId',userAuth,async (req,res)=>{
+    try{
+        const {targetUserId}=req.params
+        const user=await User.findById(targetUserId).select({password:0})
+        if(!user){
+            throw new Error("No user found with id "+targetUserId)
+        }
+        res.send(user)
+    }
+    catch(error){
+        res.status(400).json({message:`${error}`});
+    }
+})
 
 
 module.exports = router;
