@@ -7,6 +7,8 @@ const getSecretRoomId=(userId,targetUserId)=>{
     return crypto.createHash("sha256").update([userId,targetUserId].sort().join('_')).digest("hex")
 }
 
+const onlineUsers=new Map()//map to store all online users
+
 const initSocket=(server)=>{
     const io=socket(server,{
         cors:{
@@ -24,7 +26,27 @@ const initSocket=(server)=>{
             const room=getSecretRoomId(userId,targetUserId)//sorting to make the room same for both users
             console.log("Joining room "+ room)
             socket.join(room)
+
+            //when new user joins room
+            //1. all the users should know about his online status
+            onlineUsers.set(userId,socket.id)
+            io.to(room).emit("userOnlineStatus",({userId,isOnline:true}))
+
+            //2. the joining user  should also know if the target user is already online when user is joining
+            if(onlineUsers.has(targetUserId)){
+                socket.emit("userOnlineStatus",({userId:targetUserId,isOnline:true}))
+            }
+
         })
+
+        socket.on("leaveChat",({userId,targetUserId})=>{
+            const room=getSecretRoomId(userId,targetUserId)
+
+            onlineUsers.delete(userId)
+            io.to(room).emit("userOnlineStatus",({userId,isOnline:false}))
+            socket.leave(room)
+        })
+
         socket.on("sendMessage",async ({firstName,lastName,photoUrl,userId,targetUserId,text})=>{
 
             try{
@@ -65,6 +87,20 @@ const initSocket=(server)=>{
         })
         socket.on("disconnect",()=>{
             //event for disconnecting
+
+            //cleanup process
+            let disconnectedUserId = null
+
+            onlineUsers.forEach((socketId, userId) => {
+                if (socketId === socket.id) {
+                    disconnectedUserId = userId
+                }
+            })
+
+            if (disconnectedUserId) {
+                onlineUsers.delete(disconnectedUserId);
+                io.emit("userOnlineStatus", { userId: disconnectedUserId, isOnline:false })
+            }
         })
     })
 
